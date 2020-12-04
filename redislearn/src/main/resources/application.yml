@@ -1,0 +1,65 @@
+
+
+spring:  application:    name: redisLearn
+
+  redis:
+  # Redis服务器地址    host: 139.155.235.133
+    # Redis服务器连接端口
+    port: 6379
+ # Redis数据库索引（默认为0）
+    database: 0  
+# Redis服务器连接密码（默认为空）
+    password: 
+## 连接池最大连接数（使用负值表示没有限制） 默认 8
+    lettuce:
+      pool: 
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+## 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+#spring.redis.lettuce.pool.max-wait=-1
+## 连接池中的最大空闲连接 默认 8
+#spring.redis.lettuce.pool.max-idle=8
+## 连接池中的最小空闲连接 默认 0
+#spring.redis.lettuce.pool.min-idle=0
+    
+    
+    
+## jetcache 集成使用
+#jetcache:
+#  # 每隔多久统计信息的时长配置
+#  statIntervalMinutes: 15
+#  # 是否配置前缀
+#  areaInCacheName: false
+#  remote:
+#    default:
+#      # 缓存数据库类型
+#      type: redis.lettuce
+#      keyConvertor: fastjson
+##      uri: redis://:Yuxuelian-520@47.102.100.40:6379/15
+#      uri: redis://security:nanfeng-9086@r-uf6c40iy5czxtyszd6pd.redis.rds.aliyuncs.com:6379/10
+##      uri: redis://security_backend:nanfeng_9086@r-uf6c40iy5czxtyszd6pd.redis.rds.aliyuncs.com:6379/
+##        defaultExpireInMillis: 20000    //全局缓存失效时间      #keyPrefix: ec    
+    
+    
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+  remote:
+    default:
+      uri: redis://139.155.235.133
+      type: redis.lettuce
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      host: 139.155.235.133
+      port: 6379
