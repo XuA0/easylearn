@@ -14,5 +14,6 @@
   <modules>
   	<module>redislearn</module>
     <module>mybatislearn</module>
+    <module>concurrentlearn</module>
   </modules>
 </project>

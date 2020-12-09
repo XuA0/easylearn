@@ -1,5 +1,7 @@
 package com.xuao.redislearn.controller;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
+import com.xuao.redislearn.redislock.RedisLock;
 
 @RestController
 @RequestMapping("/api/jetcache")
@@ -20,9 +23,14 @@ public class JetCacheController {
 	// redis学习2.0 , jetCache
 	@CreateCache
 	Cache<String, String> testCache;
-	
+
 	@CreateCache
 	Cache<String, Integer> integerCache;
+
+	@Resource
+	RedisLock redisLock;
+
+	private static int i = 0;
 
 	@GetMapping("testRedis")
 	public void testRedis() {
@@ -31,7 +39,7 @@ public class JetCacheController {
 	}
 
 	@GetMapping("addInteger")
-	public  void AddInteger() {
+	public void AddInteger() {
 		Integer integer = integerCache.get("testInteger");
 		integerCache.put("testInteger", ++integer);
 		log.info(integer.toString());
@@ -39,7 +47,7 @@ public class JetCacheController {
 
 	@GetMapping("testResult")
 	public Integer testResult() {
-		Integer integer =  integerCache.get("testInteger");
+		Integer integer = integerCache.get("testInteger");
 		log.info(integer.toString());
 		return integer;
 	}
@@ -49,5 +57,28 @@ public class JetCacheController {
 		integerCache.put("testInteger", new Integer(0));
 	}
 
-}
+	@GetMapping("testlock")
+	public void testLock() {
+		try {
+			while (true) {
+				if (redisLock.lock("testlock")) {
+					i++;
+					log.info(String.valueOf(i));
+					break;
+				}
+				;
+			}
+			if (i < 5) {
+				testLock();
+			} else {
+				i = 0;
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			redisLock.unlock("testlock");
+		}
+	}
+
+}

@@ -3,6 +3,8 @@ package com.xuao.redislearn.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xuao.redislearn.redislock.RedisLock;
+
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -115,5 +117,10 @@ public class RedisConfig {
     @Bean
     public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForZSet();
+    }
+    
+    @Bean
+    RedisLock redisLock() {
+    	return new RedisLock();
     }
 }

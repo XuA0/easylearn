@@ -3,7 +3,7 @@
 spring:  application:    name: redisLearn
 
   redis:
-  # Redis服务器地址    host: 
+  # Redis服务器地址    host: 139.155.235.133
     # Redis服务器连接端口
     port: 6379
  # Redis数据库索引（默认为0）
@@ -52,7 +52,7 @@ jetcache:
       keyConvertor: fastjson
   remote:
     default:
-      uri: redis://
+      uri: redis://139.155.235.133
       type: redis.lettuce
       keyConvertor: fastjson
       valueEncoder: java
@@ -61,5 +61,5 @@ jetcache:
         minIdle: 5
         maxIdle: 20
         maxTotal: 50
-      host: 
+      host: 139.155.235.133
       port: 6379
